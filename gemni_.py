@@ -16,7 +16,7 @@ def apiai(prompt):
 
 # Streamlit UI
 st.title("Gemini API AI")
-st.write("This is a simple Streamlit app to interact with the Gemini API.")
+st.write("This is a simple Streamlit app to interact with the Gemini API. MADE BY PRATHAM GOYAL...")
 prompt = st.text_area("Enter your prompt", height=100, placeholder="Type your prompt here...")
 
 if st.button("Submit"):
