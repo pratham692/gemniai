@@ -21,6 +21,7 @@ st.write("This is a simple Streamlit app to interact with the Gemini API. MADE B
 prompt = st.text_area("Enter your prompt", height=100, placeholder="Type your prompt here...")
 
 if st.button("Submit"):
+    st.rerun()
     if prompt:
         with st.spinner("Generating response..."):
             response = apiai(prompt)
