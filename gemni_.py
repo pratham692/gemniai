@@ -1,6 +1,7 @@
 import google.generativeai as genai
 import streamlit as st
-
+def refresh():
+    st.rerun()
 # Function to generate AI response
 def apiai(prompt):
     api_key = "AIzaSyBUOfYKrZWcjme8mDlcFU3GTgJt97Bl2os"  # Ideally move to st.secrets or .env
@@ -20,8 +21,7 @@ st.title("Gemini API AI USING STREAMLIT WEBAPP")
 st.write("This is a simple Streamlit app to interact with the Gemini API. MADE BY PRATHAM GOYAL...")
 prompt = st.text_area("Enter your prompt", height=100, placeholder="Type your prompt here...")
 
-if st.button("Submit"):
-    st.rerun()
+if st.button("Submit",on_click=refresh):
     if prompt:
         with st.spinner("Generating response..."):
             response = apiai(prompt)
