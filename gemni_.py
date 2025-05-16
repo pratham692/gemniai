@@ -6,6 +6,7 @@ def apiai(prompt):
     api_key = "AIzaSyBUOfYKrZWcjme8mDlcFU3GTgJt97Bl2os"  # Ideally move to st.secrets or .env
 
     genai.configure(api_key=api_key)
+    
     model = genai.GenerativeModel("gemini-1.5-flash")
 
     try:
@@ -15,7 +16,7 @@ def apiai(prompt):
         return f"An error occurred: {e}"
 
 # Streamlit UI
-st.title("Gemini API AI")
+st.title("Gemini API AI USING STREAMLIT WEBAPP")
 st.write("This is a simple Streamlit app to interact with the Gemini API. MADE BY PRATHAM GOYAL...")
 prompt = st.text_area("Enter your prompt", height=100, placeholder="Type your prompt here...")
 
