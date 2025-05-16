@@ -1,37 +1,45 @@
 import google.generativeai as genai
 import streamlit as st
-def refresh():
-    st.rerun()
+
 # Function to generate AI response
-def apiai(prompt):
-    api_key = "AIzaSyBUOfYKrZWcjme8mDlcFU3GTgJt97Bl2os"  # Ideally move to st.secrets or .env
-
-    genai.configure(api_key=api_key)
-    
-    model = genai.GenerativeModel("gemini-1.5-flash")
-
+def get_gemini_response(prompt):
     try:
+        # Configure with API key from secrets
+        genai.configure(api_key="AIzaSyBUOfYKrZWcjme8mDlcFU3GTgJt97Bl2os")
+        
+        model = genai.GenerativeModel("gemini-1.5-flash")
         response = model.generate_content(prompt)
         return response.text
     except Exception as e:
         return f"An error occurred: {e}"
 
-# Streamlit UI
-st.title("Gemini API AI USING STREAMLIT WEBAPP")
-st.write("This is a simple Streamlit app to interact with the Gemini API. MADE BY PRATHAM GOYAL...")
-prompt = st.text_area("Enter your prompt", height=100, placeholder="Type your prompt here...")
+# Streamlit UI setup
+st.title("Gemini API Chat")
+st.write("A simple chat interface for Gemini AI. Made by Pratham Goyal.")
 
-if st.button("Submit",on_click=refresh):
-    if prompt:
-        with st.spinner("Generating response..."):
-            response = apiai(prompt)
+# Initialize chat history
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
-        if response:
-            st.success("Response generated successfully.")
-            st.write("Response:")
-            st.chat_message("user").markdown(prompt)
-            st.chat_message("assistant").markdown(response)
-        else:
-            st.error("No response received.")
-    else:
-        st.error("Please enter a prompt before submitting.")
+# Display chat messages from history
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+# Accept user input
+if prompt := st.chat_input("Type your message here..."):
+    # Add user message to chat history
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    
+    # Display user message
+    with st.chat_message("user"):
+        st.markdown(prompt)
+    
+    # Display assistant response
+    with st.chat_message("assistant"):
+        with st.spinner("Thinking..."):
+            response = get_gemini_response(prompt)
+            st.markdown(response)
+    
+    # Add assistant response to chat history
+    st.session_state.messages.append({"role": "assistant", "content": response})
